@@ -3,19 +3,20 @@ import {
   Code, Smartphone, Globe, Sparkles, Shield, BookOpen,
   Cloud, Megaphone, Target, Eye, CheckCircle, Clock,
   DollarSign, Zap, Coffee, Package, AppWindow, Waypoints,
-  Database, Server, Component, GitMerge, Terminal, Bot, Wind
+  Database, Server, Component, GitMerge, Bot, Wind
+  // Corrected: 'Terminal' has been removed from this import list
 } from 'lucide-react';
 
-// Navigation links from PDF [cite: 42]
+// Navigation links from PDF
 export const navLinks = ['Home', 'About', 'Services', 'Portfolio', 'Careers', 'Contact'];
 
-// Hero content from PDF [cite: 46, 47]
+// Hero content from PDF
 export const heroContent = {
   tagline: "Your Complete IT & Digital Solutions Partner",
   subtext: "We build websites, apps, and digital platforms that grow your business."
 };
 
-// Services from PDF [cite: 16, 17, 18, 19, 20, 21]
+// Services from PDF
 export const services = [
   { 
     icon: <Globe className="w-10 h-10" />, 
@@ -61,7 +62,7 @@ export const services = [
   }
 ];
 
-// --- UPDATED TECHNOLOGIES WITH ICONS --- [cite: 23]
+// --- UPDATED TECHNOLOGIES WITH ICONS ---
 export const technologies = [
   { name: "Java", icon: <Coffee className="w-10 h-10 text-red-500" /> },
   { name: "Spring Boot", icon: <Package className="w-10 h-10 text-green-500" /> },
@@ -78,7 +79,7 @@ export const technologies = [
 ];
 // --- END UPDATE ---
 
-// Portfolio Projects from PDF [cite: 25, 26, 28, 29]
+// Portfolio Projects from PDF
 export const portfolio = [
   { title: "ApkeDoctorG", category: "Healthcare", image: "bg-gradient-to-br from-blue-600 to-purple-700", stats: "Healthcare Booking", description: "Appointment booking app for doctors and patients.", fullDescription: "Platform connecting patients with doctors. Online booking, prescriptions, video calls, health records.", tech: ["Spring Boot", "React Native", "PostgreSQL", "AWS"], duration: "8 months" },
   { title: "BEU Mate App", category: "Education", image: "bg-gradient-to-br from-emerald-600 to-cyan-700", stats: "Community Platform", description: "Community app for BEU students and alumni.", fullDescription: "Platform for Bihar Engineering University. Events, news, alumni directory, jobs.", tech: ["React Native", "Spring Boot", "MySQL"], duration: "6 months" },
@@ -86,7 +87,7 @@ export const portfolio = [
   { title: "DevSkillQuest", category: "EdTech", image: "bg-gradient-to-br from-pink-600 to-purple-700", stats: "Learning Platform", description: "EdTech for learning and assessments.", fullDescription: "Online learning with courses, coding, internships, assessments.", tech: ["React.js", "Spring Boot", "PostgreSQL"], duration: "7 months" }
 ];
 
-// Why Choose Us data from PDF [cite: 31, 32, 33, 34, 35, 36]
+// Why Choose Us data from PDF
 export const whyChooseUs = [
   { icon: <Zap className="w-8 h-8 text-blue-400" />, title: "End-to-End Solutions", description: "One roof for all IT & Digital needs." },
   { icon: <Sparkles className="w-8 h-8 text-purple-400" />, title: "Experienced Developers", description: "Skilled designers & developers." },
@@ -110,10 +111,10 @@ export const testimonials = [
   { name: "Rahul Singh", role: "DevSkillQuest", content: "Comprehensive training. Got my first job within 2 months!", rating: 5, image: "bg-gradient-to-br from-purple-500 to-pink-600" }
 ];
 
-// PDF Mission/Vision [cite: 13, 14]
+// PDF Mission/Vision
 export const missionVision = {
   mission: {
-    icon: <Target className="w-16 h-16 text-blue-400 mb-6" />,
+    icon: <Target className="w-1S h-16 text-blue-400 mb-6" />,
     title: "Our Mission",
     text: "To simplify technology and deliver powerful, user-focused digital experiences for every business."
   },
