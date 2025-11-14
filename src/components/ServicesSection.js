@@ -29,9 +29,9 @@ export const ServicesSection = () => {
               </div>
               <h3 className="text-2xl font-black mb-3">{service.title}</h3>
               <p className={`mb-5 ${activeService === i ? 'text-white/90' : 'text-slate-600 dark:text-slate-400'}`}>
-                {service.description}
+                {activeService === i ? service.description : service.description}
               </p>
-              <ul className="space-y-2">
+              <ul className={`space-y-2 transition-all duration-300 ${activeService === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>
                 {service.features.map((feature, idx) => (
                   <li key={idx} className={`flex items-center space-x-2 text-sm ${activeService === i ? 'text-white/90' : 'text-slate-600 dark:text-slate-400'}`}>
                     <Check className="w-4 h-4" />

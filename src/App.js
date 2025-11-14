@@ -1,70 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/ThemeContext'; // 1. Imports useTheme
-import { navLinks } from '../data';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import { Services } from './pages/Services';
+import { Contact } from './pages/Contact';
+import { Career } from './pages/Career';
+import { Team } from './pages/Team';
+import { FAQ } from './pages/FAQ';
+import { Terms } from './pages/Terms';
+import { PortfolioModal, JobModal } from './components/Modals';
 
-export const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { isDarkMode, setIsDarkMode } = useTheme(); // 2. Gets state and setter
+export default function AppDost() {
+  const [notification, setNotification] = useState({ show: false, message: '' });
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedJob, setSelectedJob] = useState(null);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleNavClick = (e, targetId) => {
-    e.preventDefault();
-    document.querySelector(targetId)?.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
+  const showNotification = (message) => {
+    setNotification({ show: true, message });
+    setTimeout(() => {
+      setNotification({ show: false, message: '' });
+    }, 3000);
   };
 
-  const navId = (link) => (link === 'Home' ? '#home' : `#${link.toLowerCase()}`);
+  const layoutProps = {
+    notification,
+    showNotification,
+  };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all ${isScrolled ? 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl border-b-2 border-slate-200 dark:border-slate-800 shadow-2xl' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-6 py-5">
-        <div className="flex items-center justify-between">
-          <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="flex items-center space-x-3 group">
-            <img
-              src="https://res.cloudinary.com/dhled94be/image/upload/v1762145701/course_thumbnails/fc5f257dr6tzjntorhse.png"
-              alt="AppDost Logo"
-              className="w-12 h-12 rounded-2xl group-hover:scale-110 transition-all shadow-lg"
-            />
-            <span className="text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">AppDost</span>
-          </a>
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map(item => (
-              <a key={item} href={navId(item)} onClick={(e) => handleNavClick(e, navId(item))} className="font-semibold hover:text-purple-500 transition-colors">{item}</a>
-            ))}
-            
-            {/* 3. This button onClick should now work perfectly */}
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)} 
-              className="p-3 rounded-xl bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-800 hover:scale-110 transition-all"
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            
-            <button onClick={(e) => handleNavClick(e, '#contact')} className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-xl transition-all">
-              Get a Quote
-            </button>
-          </div>
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-      {isMenuOpen && (
-        <div className="md:hidden bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border-t-2 border-slate-200 dark:border-slate-800">
-          <div className="px-6 py-6 space-y-4">
-            {navLinks.map(item => (
-              <a key={item} href={navId(item)} onClick={(e) => handleNavClick(e, navId(item))} className="block py-3 px-4 rounded-xl hover:bg-purple-500/10 font-semibold">{item}</a>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+    <>
+      <Routes>
+        {/* All pages are rendered inside the Layout component */}
+        <Route path="/" element={<Layout {...layoutProps} />}>
+          {/* Page Components */}
+          <Route index element={<Home onProjectClick={setSelectedProject} showNotification={showNotification} />} />
+          <Route path="about" element={<About />} />
+          <Route path="services" element={<Services />} />
+          <Route path="contact" element={<Contact showNotification={showNotification} />} />
+          <Route path="careers" element={<Career onJobClick={setSelectedJob} />} />
+          <Route path="team" element={<Team />} />
+          <Route path="faq" element={<FAQ />} />
+          <Route path="terms" element={<Terms />} />
+          
+          {/* Fallback for any other route */}
+          <Route path="*" element={<Home onProjectClick={setSelectedProject} showNotification={showNotification} />} />
+        </Route>
+      </Routes>
+
+      {/* Modals live outside the router to float over all pages */}
+      <PortfolioModal 
+        project={selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
+      <JobModal 
+        job={selectedJob} 
+        onClose={() => setSelectedJob(null)} 
+      />
+    </>
   );
-};
+}
+

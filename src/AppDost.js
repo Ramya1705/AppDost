@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from './context/ThemeContext'; // <-- This line is now fixed
-
-// Import all your new components
-import { Navbar } from './components/Navbar';
-import { HomeSection } from './components/HomeSection';
-import { AboutSection } from './components/AboutSection';
-import { ServicesSection } from './components/ServicesSection';
-import { TechnologiesGrid } from './components/TechnologiesGrid';
-import { PortfolioSection } from './components/PortfolioSection';
-import { WhyChooseUs } from './components/WhyChooseUs';
-import { CareersSection } from './components/CareersSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
-import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { Notification } from './components/Notification';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import { Services } from './pages/Services';
+import { Contact } from './pages/Contact';
+import { Career } from './pages/Career';
+import { Team } from './pages/Team';
+import { FAQ } from './pages/FAQ';
+import { Terms } from './pages/Terms';
 import { PortfolioModal, JobModal } from './components/Modals';
 
 export default function AppDost() {
   const [notification, setNotification] = useState({ show: false, message: '' });
-  
-  // State for modals will be lifted here
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
 
@@ -31,49 +23,47 @@ export default function AppDost() {
     }, 3000);
   };
 
-  return (
-    <ThemeProvider>
-      {/* This main div now uses Tailwind's dark: variants */}
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-500">
-        
-        {/* Background blur effects */}
-        <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '4s'}} />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '6s'}} />
-        </div>
-        
-        <Notification 
-          show={notification.show} 
-          message={notification.message} 
-        />
-        
-        <Navbar />
-        
-        <main className="relative z-10">
-          <HomeSection />
-          <AboutSection />
-          <ServicesSection />
-          <TechnologiesGrid />
-          <PortfolioSection onProjectClick={setSelectedProject} />
-          <WhyChooseUs />
-          <CareersSection onJobClick={setSelectedJob} />
-          <TestimonialsSection />
-          <ContactSection onFormSubmit={showNotification} />
-        </main>
-        
-        <Footer />
-        <ScrollToTopButton />
+  const layoutProps = {
+    notification,
+    showNotification,
+  };
 
-        {/* Modals */}
-        <PortfolioModal 
-          project={selectedProject} 
-          onClose={() => setSelectedProject(null)} 
-        />
-        <JobModal 
-          job={selectedJob} 
-          onClose={() => setSelectedJob(null)} 
-        />
-      </div>
-    </ThemeProvider>
+  return (
+    <>
+      <Routes>
+        {/* All pages are rendered inside the Layout component */}
+        <Route path="/" element={<Layout {...layoutProps} />}>
+          
+          {/* Page Components */}
+          <Route 
+            index 
+            element={<Home onProjectClick={setSelectedProject} showNotification={showNotification} />} 
+          />
+          <Route path="about" element={<About />} />
+          <Route path="services" element={<Services />} />
+          <Route path="contact" element={<Contact showNotification={showNotification} />} />
+          <Route path="careers" element={<Career onJobClick={setSelectedJob} />} />
+          <Route path="team" element={<Team />} />
+          <Route path="faq" element={<FAQ />} />
+          <Route path="terms" element={<Terms />} />
+          
+          {/* Fallback Route */}
+          <Route 
+            path="*" 
+            element={<Home onProjectClick={setSelectedProject} showNotification={showNotification} />} 
+          />
+        </Route>
+      </Routes>
+
+      {/* Modals */}
+      <PortfolioModal 
+        project={selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
+      <JobModal 
+        job={selectedJob} 
+        onClose={() => setSelectedJob(null)} 
+      />
+    </>
   );
 }

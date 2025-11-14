@@ -6,6 +6,14 @@ export const ContactSection = ({ onFormSubmit }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', service: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
 
+  // --- UPDATE: Phone Number Validation ---
+  const handlePhoneChange = (e) => {
+    // Allows only numbers, +, and space
+    const value = e.target.value.replace(/[^0-9+\s]/g, '');
+    setFormData({...formData, phone: value});
+  };
+  // --- END UPDATE ---
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormStatus('submitting');
@@ -20,6 +28,17 @@ export const ContactSection = ({ onFormSubmit }) => {
     }, 2000);
   };
 
+  // --- UPDATE: Mailto link properties ---
+  const emailSubject = "New Project Inquiry from AppDost Website";
+  const emailBody = "Hello AppDost Team,\n\nI'm interested in your services and would like to discuss a project.\n\nMy project is about: [Please describe your project]\n\nBest regards,";
+  const mailtoLink = `mailto:info@appdost.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  // --- END UPDATE ---
+
+  // --- UPDATE: Add your official phone number here ---
+  const officialPhoneNumber = "+91 99999 88888"; // <-- REPLACE THIS
+  const telLink = `tel:${officialPhoneNumber.replace(/\s/g, '')}`;
+  // --- END UPDATE ---
+
   return (
     <AnimatedSection id="contact" className="py-32 px-6 bg-gradient-to-b from-slate-50 via-blue-50 to-slate-50 dark:from-slate-950 dark:via-blue-950/10 dark:to-slate-950">
       <div className="max-w-7xl mx-auto">
@@ -28,6 +47,7 @@ export const ContactSection = ({ onFormSubmit }) => {
           <p className="text-xl text-slate-600 dark:text-slate-400">Have a project in mind? Let's talk!</p>
         </div>
         <div className="grid md:grid-cols-2 gap-12">
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-bold mb-3">Name *</label>
@@ -39,7 +59,8 @@ export const ContactSection = ({ onFormSubmit }) => {
             </div>
             <div>
               <label className="block text-sm font-bold mb-3">Phone</label>
-              <input type="tel" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:outline-none" placeholder="+91 1234567890"/>
+              {/* --- UPDATE: Using new handler --- */}
+              <input type="tel" value={formData.phone} onChange={handlePhoneChange} className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:outline-none" placeholder="+91 1234567890"/>
             </div>
             <div>
               <label className="block text-sm font-bold mb-3">Service *</label>
@@ -63,6 +84,8 @@ export const ContactSection = ({ onFormSubmit }) => {
             </button>
             {formStatus === 'success' && <p className="text-center text-green-400 font-bold">✓ Message sent successfully!</p>}
           </form>
+          
+          {/* Contact Info */}
           <div className="space-y-6">
             <div className="p-8 rounded-2xl bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-800 shadow-lg">
               <div className="flex items-start space-x-6">
@@ -71,7 +94,8 @@ export const ContactSection = ({ onFormSubmit }) => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email Us</h3>
-                  <a href="mailto:info@appdost.com" className="block text-sm text-slate-600 dark:text-slate-300 hover:text-blue-400">info@appdost.com</a>
+                  {/* --- UPDATE: Using mailto link --- */}
+                  <a href={mailtoLink} target="_blank" rel="noopener noreferrer" className="block text-sm text-slate-600 dark:text-slate-300 hover:text-blue-400">info@appdost.com</a>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Response within 24 hours</p>
                 </div>
               </div>
@@ -83,7 +107,8 @@ export const ContactSection = ({ onFormSubmit }) => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Call Us</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">Available for consultation</p>
+                  {/* --- UPDATE: Using tel link --- */}
+                  <a href={telLink} className="block text-sm text-slate-600 dark:text-slate-300 hover:text-blue-400">{officialPhoneNumber}</a>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Mon - Sat: 9 AM - 6 PM IST</p>
                 </div>
               </div>
